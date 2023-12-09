@@ -1,3 +1,21 @@
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# Create your models here.
+class User(AbstractUser):
+    image = models.ImageField(upload_to='user_image')
+    page = models.OneToOneField('Profile', on_delete=models.CASCADE, null=True)
+    commentaries = models.ForeignKey('Message', on_delete=models.CASCADE, null=True, blank=True)
+
+
+
+
+class Profile(models.Model):
+    date_birth = models.DateField()
+    status = models.CharField(max_length=1000, blank=True, default='Привет я новенький :)')
+    about = models.TextField(blank=True, default='Обо мне ...')
+    comments = models.ForeignKey('Message', on_delete=models.CASCADE, null=True, blank=True, default=None)
+
+class Message(models.Model):
+    text = models.TextField(max_length=1000, blank=True, default='None')
+    date = models.DateTimeField(auto_now=True)
