@@ -1,10 +1,14 @@
 {% extends 'social_network/base.html' %}
 {% block content %}
     <h1>Это главная страница расширенная блоком  content</h1>
+{% endblock %}
+{% block navigation %}
     {% if user.is_authenticated %}
+        <h3>{{ user.username }}</h3>
         <a href="{% url 'main:profile' request.user.id %}"><p>Моя страничка</p></a>
+        <a href="{% url 'main:logout' %}"><p>Выйти</p></a>
+    {% else %}
+        <a href="{% url 'main:registration' %}"><p>Регистрация</p></a>
+        <a href="{% url 'main:login' %}"><p>Войти</p></a>
     {% endif %}
-    <br>
-    <a href="{% url 'main:registration' %}"><p>Регистрация</p></a>
-    <a href="{% url 'main:login' %}"><p>Авторизация</p></a>
 {% endblock %}

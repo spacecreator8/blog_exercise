@@ -26,3 +26,15 @@ class CommentsForm(forms.ModelForm):
     class Meta:
         model = Message
         fields = ['text']
+        widgets = {
+            'text': forms.Textarea(attrs={'cols': 100, 'rows': 5, 'placeholder': 'Сообщение'})
+        }
+        labels = {
+            'text': 'Оставить сообщение',
+        }
+
+    def clean_text(self):
+        cd = self.cleaned_data
+        if cd['text'] == '' or cd['text'] == ' ':
+            raise forms.ValidationError('Комментарий не должен быть пустым.')
+        return cd['text']

@@ -1,5 +1,34 @@
 {% extends 'social_network/base.html' %}
+{% block navigation %}
+    <h3>{{ user.username }}</h3>
+     <a href="{% url 'main:index' %}"><p>Главная</p></a>
+     <a href="{% url 'main:logout' %}"><p>Выйти</p></a>
+{% endblock %}
 {% block content %}
-    <h1>Это личная страница расширенная блоком  content</h1>
+    <h2>Ваша страница, {{ title }}</h2>
+    <br>
+    <h2>{{ user_object.first_name }} {{ user_object.last_name }}</h2>
+    <p><b>Статус:</b> {{page_object.status}}</p>
+    {% if user_object.image %}
+        <img class="avatar" src="{{ user_object.image.url }}" alt="аватарка пользователя">
+    {% endif %}
+    <br>
+    <p><b>Дата рождения:</b> {{page_object.date_birth}}</p>
+    <p><b>Обо мне:</b> {{page_object.about}}</p>
+    <br>
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Оставить комментарий</button>
+    </form>
+
+        {% for i in message_queryset %}
+            <p><b>Дата комментария:</b> {{ i.date }}</p>
+            <p>{{ i.text }}</p>
+            <hr>
+        {% endfor %}
+
+
 
 {% endblock %}

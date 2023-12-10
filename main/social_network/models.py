@@ -14,8 +14,9 @@ class Profile(models.Model):
     date_birth = models.DateField(blank=True, default=None, null=True)
     status = models.CharField(max_length=1000, blank=True, default='Привет я новенький :)')
     about = models.TextField(blank=True, default='Обо мне ...')
-    comments = models.ForeignKey('Message', on_delete=models.CASCADE, null=True, blank=True, default=None)
+
 
 class Message(models.Model):
-    text = models.TextField(max_length=1000, blank=True, default='None')
+    page = models.ForeignKey('Profile', on_delete=models.CASCADE, null=True, blank=True, default=None)
+    text = models.TextField(max_length=1000, blank=True, default='')
     date = models.DateTimeField(auto_now=True)

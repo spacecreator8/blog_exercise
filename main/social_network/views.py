@@ -44,11 +44,14 @@ class LoginViewMy(LoginView):
 def page_with_message(request, pk):
     user_object = get_user_model().objects.get(pk=pk)
     page_object = user_object.page
+    message_queryset = page_object.message_set.all()
     form = CommentsForm()
     context = {
         'user_object': user_object,
         'page_object': page_object,
+        'message_queryset': message_queryset,
         'form': form,
+        'title': user_object.username
     }
 
     return render(request, 'social_network/page.html', context=context)

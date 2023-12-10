@@ -124,3 +124,4 @@ AUTH_USER_MODEL = 'social_network.User'
 
 LOGIN_REDIRECT_URL = 'main:index'
 LOGIN_URL = 'main:login'
+LOGOUT_REDIRECT_URL = 'main:index'
