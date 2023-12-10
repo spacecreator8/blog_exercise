@@ -2,6 +2,7 @@
 {% block navigation %}
     <h3>{{ user.username }}</h3>
      <a href="{% url 'main:index' %}"><p>Главная</p></a>
+     <a href="{% url 'main:update'  request.user.pk %}"><p>Редактировать</p></a>
      <a href="{% url 'main:logout' %}"><p>Выйти</p></a>
 {% endblock %}
 {% block content %}
@@ -23,8 +24,8 @@
         <button type="submit">Оставить комментарий</button>
     </form>
 
-        {% for i in message_queryset %}
-            <p><b>Дата комментария:</b> {{ i.date }}</p>
+        {% for i in message_q %}
+            <p><b>{{ i.username }}</b> пишет: (<b>Дата комментария:</b> {{ i.date }})</p>
             <p>{{ i.text }}</p>
             <hr>
         {% endfor %}

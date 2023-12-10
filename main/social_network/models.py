@@ -17,6 +17,7 @@ class Profile(models.Model):
 
 
 class Message(models.Model):
+    username =  models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, blank=True, default=None)
     page = models.ForeignKey('Profile', on_delete=models.CASCADE, null=True, blank=True, default=None)
     text = models.TextField(max_length=1000, blank=True, default='')
     date = models.DateTimeField(auto_now=True)

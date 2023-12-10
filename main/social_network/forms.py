@@ -38,3 +38,11 @@ class CommentsForm(forms.ModelForm):
         if cd['text'] == '' or cd['text'] == ' ':
             raise forms.ValidationError('Комментарий не должен быть пустым.')
         return cd['text']
+
+class UpdateForm(forms.Form):
+    first_name = forms.CharField(label='Имя: ')
+    last_name = forms.CharField(label='Фамилия: ')
+    date = forms.DateField(label='Дата вашего рождения: ', widget=forms.DateInput())
+    status = forms.CharField(label='Статус: ')
+    about = forms.CharField(label='О себе: ', widget=forms.Textarea(attrs={
+                            'cols': 65, 'rows': 10, 'placeholder': 'Введите текст'}))

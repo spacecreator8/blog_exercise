@@ -10,5 +10,6 @@ urlpatterns = [
     path('login/', LoginViewMy.as_view(), name='login'),
     path('profile/<int:pk>', page_with_message, name='profile'),
     path('logout/', LogoutView.as_view(), name='logout'),
+    path('update/<int:pk>', update_page, name='update'),
 
 ]
