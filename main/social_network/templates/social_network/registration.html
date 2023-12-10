@@ -1,8 +1,9 @@
 {% extends 'social_network/base.html' %}
 {% block content %}
-    <h1>Регистрация</h1>
+    <h1>{{ title }}</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
+        <button type="submit">ОТПРАВИТЬ</button>
     </form>
 {% endblock %}
