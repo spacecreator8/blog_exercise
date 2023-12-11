@@ -21,7 +21,7 @@ def index(request):
         page_object = p.get_page(1)
 
     context = {
-        'title': 'Главная страница',
+        'title': '50 последних коммегтариев',
         'page_object': page_object,
     }
 
