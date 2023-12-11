@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -11,10 +12,21 @@ from social_network.forms import RegistrationForm, CommentsForm, UpdateForm
 from social_network.models import Profile, User, Message
 
 
-# Create your views here.
-
+# Буду передавать номер страницы через переменную GET ...index/?page_number=2
 def index(request):
-    return render(request, 'social_network/index.html', context={'title': 'Главная страница'})
+    p = Paginator(Message.objects.order_by('-date'), 5)
+    if request.GET:
+        page_object = p.get_page(request.GET.get('page_number'))
+    else:
+        page_object = p.get_page(1)
+
+    context = {
+        'title': 'Главная страница',
+        'page_object': page_object,
+    }
+
+    return render(request, 'social_network/index.html',
+                  context=context )
 
 class AllUsers(ListView):
     def get_queryset(self):
