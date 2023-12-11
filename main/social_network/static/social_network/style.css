@@ -50,8 +50,18 @@ img{
     display:flex;
     justify-content:left
 }
-.pagination>li{
-    width:50px;
+.pagination li{
+    position:relative;
+    list-style:none;
+    margin:10px;
+    border:1px solid DarkSlateGray;
+    width:30px;
+    height:30px;
     border-radius:50%;
-    border: 2px solid DarkSlateGray;
+
+}
+.pagination li div{
+    position:absolute;
+    left:10px;
+    top:5px;
 }

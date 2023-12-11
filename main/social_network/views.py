@@ -14,15 +14,18 @@ from social_network.models import Profile, User, Message
 
 # Буду передавать номер страницы через переменную GET ...index/?page_number=2
 def index(request):
-    p = Paginator(Message.objects.order_by('-date'), 5)
+    p = Paginator(Message.objects.order_by('-date'), 50)
     if request.GET:
         page_object = p.get_page(request.GET.get('page_number'))
+        number_of_page = request.GET.get('page_number')
     else:
         page_object = p.get_page(1)
+        number_of_page = 1
 
     context = {
         'title': 'Главная страница',
         'page_object': page_object,
+        'number_of_page': number_of_page
     }
 
     return render(request, 'social_network/index.html',
@@ -66,8 +69,9 @@ def page_with_message(request, pk):
         form = CommentsForm(request.POST, request.FILES)
         if form.is_valid():
             f = form.save(commit=False)
-            f.username = request.user
+            f.username = request.user                 #Кто написал комент
             f.page = page_object
+            f.destination = user_object.username      #Чья страница
             f.save()
     else:
         form = CommentsForm()

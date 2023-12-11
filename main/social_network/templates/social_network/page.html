@@ -2,6 +2,7 @@
 {% block navigation %}
     <h3>{{ user.username }}</h3>
      <a href="{% url 'main:index' %}"><p>Главная</p></a>
+     <a href="{% url 'main:all_users' %}"><p>Все пользователи</p></a>
      <a href="{% url 'main:update'  request.user.pk %}"><p>Редактировать</p></a>
      <a href="{% url 'main:logout' %}"><p>Выйти</p></a>
      <a href="{% url 'main:wanna_delete' request.user.id %}"><p>Удалить пользователя</p></a>
@@ -31,7 +32,7 @@
             {% if i.image %}
                 <img src="{{ i.image.url }}" alt="Изображение коментария">
             {% endif %}
-            {% if i.username == request.user.username or user_object.username == request.user.username %}
+            {% if i.username.username == request.user.username or i.destination == request.user.username %}
                 <p>
                     <a href="{% url 'main:edit_c' i.pk %}?return_key={{ user_object.pk }}" ><span class="red_a">Редактировать</span></a>
                     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp

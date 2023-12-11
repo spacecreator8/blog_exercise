@@ -15,8 +15,9 @@ class Profile(models.Model):
 
 
 class Message(models.Model):
-    username =  models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, blank=True, default=None)
+    username = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, blank=True, default=None, db_column='person')
     page = models.ForeignKey('Profile', on_delete=models.CASCADE, null=True, blank=True, default=None)
     text = models.TextField(max_length=1000, blank=True, default='')
     image = models.ImageField(upload_to='comments_image', blank=True, null=True)
     date = models.DateTimeField(auto_now=True)
+    destination = models.CharField(max_length=299, null=True, blank=True, default=None)
