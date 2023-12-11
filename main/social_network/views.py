@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 
-from social_network.forms import RegistrationForm, CommentsForm
+from social_network.forms import RegistrationForm, CommentsForm, UpdateForm
 from social_network.models import Profile, User
 
 
@@ -41,6 +41,7 @@ class LoginViewMy(LoginView):
     extra_context = {'title': 'Авторизация'}
     success_url = reverse_lazy('main:index')
 
+
 @login_required
 def page_with_message(request, pk):
     user_object = get_user_model().objects.get(pk=pk)
@@ -66,8 +67,48 @@ def page_with_message(request, pk):
     }
     return render(request, 'social_network/page.html', context=context)
 
+
+@login_required
 def update_page(request, pk):
     if pk == request.user.pk:
-        pass
+        if request.method == 'POST':
+            form = UpdateForm(request.POST, request.FILES)
+            if form.is_valid():
+                cd = form.cleaned_data
+                user = get_user_model().objects.get(pk=pk)
+                user.first_name = cd['first_name']
+                user.last_name = cd['last_name']
+                user.image = cd['image']
+                user.save()
+
+                profile = Profile.objects.get(pk=pk)
+                profile.status = cd['status']
+                profile.date_birth = cd['date_birth']
+                profile.about = cd['about']
+                profile.save()
+                # get_user_model().objects.update(cd['first_name'], cd['last_name'], cd['image'])
+                # Profile.objects.update(cd['status'], cd['date_birth'], cd['about'])
+        else:
+            stub = get_user_model().objects.get(pk=pk).first_name
+            stub2 = get_user_model().objects.get(pk=pk).last_name
+            stub3 = get_user_model().objects.get(pk=pk).image
+            stub4 = Profile.objects.get(pk=pk).status
+            stub5 = Profile.objects.get(pk=pk).date_birth
+            stub6 = Profile.objects.get(pk=pk).about
+
+            dict1 = {
+                'first_name': stub,
+                'last_name': stub2,
+                'image': stub3,
+                'status': stub4,
+                'date_birth': stub5,
+                'about': stub6
+            }
+            form = UpdateForm(initial=dict1)
+        context = {
+            'form': form,
+            'title': 'Редактирование данных'
+        }
+        return render(request, 'social_network/update.html', context=context)
     else:
         return redirect('/')

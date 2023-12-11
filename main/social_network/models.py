@@ -3,11 +3,9 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class User(AbstractUser):
-    image = models.ImageField(upload_to='user_image')
+    image = models.ImageField(upload_to='user_image', blank=True, null=True)
     page = models.OneToOneField('Profile', on_delete=models.CASCADE, null=True)
     commentaries = models.ForeignKey('Message', on_delete=models.CASCADE, null=True, blank=True)
-
-
 
 
 class Profile(models.Model):
