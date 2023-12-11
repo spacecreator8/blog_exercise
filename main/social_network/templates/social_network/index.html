@@ -16,6 +16,7 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
+    <h2>Последние 50 сообщений </h2>
     {% for i in page_object %}
         <p><b>{{ i.username }}</b> пишет: (<b>Дата комментария:</b> {{ i.date }})</p>
             <p>{{ i.text }}</p>
@@ -25,7 +26,7 @@
             <hr>
     {% endfor %}
 
-    <ul>
+    <ul class="pagination">
     {% for j in page_object.paginator.page_range %}
         <a href="{% url 'main:index' %}?page_number={{ j }}"><li class="pag_ref">{{ j }}</li></a>
     {% endfor %}
