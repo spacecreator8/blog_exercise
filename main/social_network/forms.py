@@ -46,4 +46,4 @@ class UpdateForm(forms.Form):
     status = forms.CharField(label='Статус ')
     about = forms.CharField(label='О себе ', widget=forms.Textarea(attrs={
                             'cols': 65, 'rows': 10, 'placeholder': 'Введите текст'}))
-    image = forms.ImageField(label='Аватарка ')
+    image = forms.ImageField(label='Аватарка ', required=False)

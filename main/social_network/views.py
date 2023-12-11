@@ -78,7 +78,9 @@ def update_page(request, pk):
                 user = get_user_model().objects.get(pk=pk)
                 user.first_name = cd['first_name']
                 user.last_name = cd['last_name']
-                user.image = cd['image']
+                if cd['image']:
+                    user.image = cd['image']
+
                 user.save()
 
                 profile = Profile.objects.get(pk=pk)
@@ -86,6 +88,8 @@ def update_page(request, pk):
                 profile.date_birth = cd['date_birth']
                 profile.about = cd['about']
                 profile.save()
+
+                return redirect(reverse_lazy('main:profile', kwargs={'pk': pk}))
                 # get_user_model().objects.update(cd['first_name'], cd['last_name'], cd['image'])
                 # Profile.objects.update(cd['status'], cd['date_birth'], cd['about'])
         else:
@@ -104,6 +108,7 @@ def update_page(request, pk):
                 'date_birth': stub5,
                 'about': stub6
             }
+
             form = UpdateForm(initial=dict1)
         context = {
             'form': form,
