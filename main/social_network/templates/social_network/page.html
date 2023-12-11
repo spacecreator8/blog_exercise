@@ -7,7 +7,7 @@
      <a href="{% url 'main:wanna_delete' request.user.id %}"><p>Удалить пользователя</p></a>
 {% endblock %}
 {% block content %}
-    <h2>Ваша страница, {{ title }}</h2>
+    <h2>Логин: {{ title }}</h2>
     <br>
     <h2>{{ user_object.first_name }} {{ user_object.last_name }}</h2>
     <p><b>Статус:</b> {{page_object.status}}</p>
@@ -19,7 +19,7 @@
     <p><b>Обо мне:</b> {{page_object.about}}</p>
     <br>
     <hr>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Оставить комментарий</button>

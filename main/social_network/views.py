@@ -6,7 +6,7 @@ from django.contrib.auth.views import LoginView
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from social_network.forms import RegistrationForm, CommentsForm, UpdateForm
 from social_network.models import Profile, User, Message
 
@@ -16,6 +16,11 @@ from social_network.models import Profile, User, Message
 def index(request):
     return render(request, 'social_network/index.html', context={'title': 'Главная страница'})
 
+class AllUsers(ListView):
+    def get_queryset(self):
+        return get_user_model().objects.filter(is_superuser=False)
+    template_name = 'social_network/all_users.html'
+    context_object_name = 'users_list'
 
 class Registration(CreateView):
     form_class = RegistrationForm
@@ -39,17 +44,17 @@ class LoginViewMy(LoginView):
     extra_context = {'title': 'Авторизация'}
     success_url = reverse_lazy('main:index')
 
-
+#не путать пользователей для страницы и присвоения комментария
 @login_required
 def page_with_message(request, pk):
     user_object = get_user_model().objects.get(pk=pk)
     page_object = user_object.page
 
     if request.method == 'POST':
-        form = CommentsForm(request.POST)
+        form = CommentsForm(request.POST, request.FILES)
         if form.is_valid():
             f = form.save(commit=False)
-            f.username = user_object
+            f.username = request.user
             f.page = page_object
             f.save()
     else:

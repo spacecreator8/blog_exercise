@@ -22,7 +22,7 @@ img{
     max-width:200px;
 }
 .main_box{
-    width:800px;
+    width:750px;
 
     border-radius:10px;
     box-shadow: 0px 0px 7px rgba(47, 79, 79, 0.5);
@@ -34,9 +34,9 @@ img{
     color: DarkSlateGray;
 }
 .navigation{
-    width:130px;
+    width:200px;
     position:fixed;
-    left:80px;
+    left:30px;
     top:50px;
     opacity: 0.9;
 

@@ -6,6 +6,7 @@ app_name = 'main'
 
 urlpatterns = [
     path('', index, name='index'),
+    path('all_users/', AllUsers.as_view(), name='all_users'),
     path('registration/', Registration.as_view(), name='registration'),
     path('login/', LoginViewMy.as_view(), name='login'),
     path('profile/<int:pk>', page_with_message, name='profile'),
