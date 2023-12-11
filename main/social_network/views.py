@@ -7,7 +7,6 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
-
 from social_network.forms import RegistrationForm, CommentsForm, UpdateForm
 from social_network.models import Profile, User, Message
 
@@ -33,7 +32,6 @@ class Registration(CreateView):
         user.page = profile
         user.save()
         return response
-
 
 class LoginViewMy(LoginView):
     form_class = AuthenticationForm
@@ -87,6 +85,7 @@ def update_page(request, pk):
                 profile.status = cd['status']
                 profile.date_birth = cd['date_birth']
                 profile.about = cd['about']
+
                 profile.save()
 
                 return redirect(reverse_lazy('main:profile', kwargs={'pk': pk}))
@@ -120,9 +119,9 @@ def update_page(request, pk):
 
 def wanna_delete(request, pk):
     return render(request, 'social_network/confirm_del_user.html', context={
-                                            'title': 'Удаление пользователя',
-                                            'pk': pk
-                                            })
+                                                                                'title': 'Удаление пользователя',
+                                                                                'pk': pk
+                                                                                })
 
 def delete_u_and_p(request, pk):
     user = get_object_or_404(get_user_model(), pk=pk)
@@ -141,7 +140,6 @@ class EditComment(LoginRequiredMixin, UpdateView):
     def dispatch(self, request, *args, **kwargs):
         self.return_key = request.GET.get('return_key')
         return super().dispatch(request, *args, **kwargs)
-
 
     def form_valid(self, form):
         if self.return_key:
@@ -169,7 +167,6 @@ class DelComment(LoginRequiredMixin, DeleteView):
     def dispatch(self, request, *args, **kwargs):
         self.return_key = request.GET.get('return_key')
         return super().dispatch(request, *args, **kwargs)
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

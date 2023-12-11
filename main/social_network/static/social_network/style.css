@@ -18,6 +18,9 @@ img{
 .red_a{
     color: FireBrick;
 }
+.only_small{
+    max-width:200px;
+}
 .main_box{
     width:800px;
 

@@ -25,12 +25,14 @@ class RegistrationForm(UserCreationForm):
 class CommentsForm(forms.ModelForm):
     class Meta:
         model = Message
-        fields = ['text']
+        fields = ['text', 'image']
         widgets = {
-            'text': forms.Textarea(attrs={'cols': 100, 'rows': 5, 'placeholder': 'Сообщение'})
+            'text': forms.Textarea(attrs={'cols': 100, 'rows': 5, 'placeholder': 'Сообщение'}),
+            'image': forms.ClearableFileInput()
         }
         labels = {
             'text': 'Оставить сообщение',
+            'image': 'Изображение',
         }
 
     def clean_text(self):
