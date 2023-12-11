@@ -4,6 +4,7 @@
      <a href="{% url 'main:index' %}"><p>Главная</p></a>
      <a href="{% url 'main:update'  request.user.pk %}"><p>Редактировать</p></a>
      <a href="{% url 'main:logout' %}"><p>Выйти</p></a>
+     <a href="{% url 'main:wanna_delete' request.user.id %}"><p>Удалить пользователя</p></a>
 {% endblock %}
 {% block content %}
     <h2>Ваша страница, {{ title }}</h2>
@@ -27,6 +28,13 @@
         {% for i in message_q %}
             <p><b>{{ i.username }}</b> пишет: (<b>Дата комментария:</b> {{ i.date }})</p>
             <p>{{ i.text }}</p>
+            {% if i.username == request.user.username or user_object.username == request.user.username %}
+                <p>
+                    <a href="{% url 'main:edit_c' i.pk %}?return_key={{ user_object.pk }}" ><span class="red_a">Редактировать</span></a>
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <a href="{% url 'main:del_c' i.pk %}?return_key={{ user_object.pk }}" ><span class="red_a" >Удалить</span></a>
+                </p>
+            {% endif %}
             <hr>
         {% endfor %}
 

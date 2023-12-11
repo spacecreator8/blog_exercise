@@ -4,12 +4,12 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, DeleteView
 
 from social_network.forms import RegistrationForm, CommentsForm, UpdateForm
-from social_network.models import Profile, User
+from social_network.models import Profile, User, Message
 
 
 # Create your views here.
@@ -117,3 +117,61 @@ def update_page(request, pk):
         return render(request, 'social_network/update.html', context=context)
     else:
         return redirect('/')
+
+def wanna_delete(request, pk):
+    return render(request, 'social_network/confirm_del_user.html', context={
+                                            'title': 'Удаление пользователя',
+                                            'pk': pk
+                                            })
+
+def delete_u_and_p(request, pk):
+    user = get_object_or_404(get_user_model(), pk=pk)
+    page = user.page
+    page.delete()
+    user.delete()
+    return redirect('/')
+
+
+
+class EditComment(LoginRequiredMixin, UpdateView):
+    model = Message
+    form_class = CommentsForm
+    template_name = 'social_network/edit_c.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.return_key = request.GET.get('return_key')
+        return super().dispatch(request, *args, **kwargs)
+
+
+    def form_valid(self, form):
+        if self.return_key:
+            form.save()
+            return redirect(reverse_lazy('main:profile', kwargs={'pk': self.return_key}))
+        else:
+            return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['return_key'] = self.return_key
+        return context
+
+
+class DelComment(LoginRequiredMixin, DeleteView):
+    model = Message
+    template_name = 'social_network/del_confirm.html'
+    extra_context = {
+        'title': 'Подтвердите удаление комментария'
+    }
+
+    def get_success_url(self):
+        return reverse_lazy('main:profile', kwargs={'pk': self.return_key})
+
+    def dispatch(self, request, *args, **kwargs):
+        self.return_key = request.GET.get('return_key')
+        return super().dispatch(request, *args, **kwargs)
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['return_key'] = self.return_key
+        return context

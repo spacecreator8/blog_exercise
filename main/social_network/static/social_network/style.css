@@ -15,6 +15,9 @@ body{
 img{
     max-width:200px;
 }
+.red_a{
+    color: FireBrick;
+}
 .main_box{
     width:800px;
 
